@@ -64,16 +64,6 @@ public class Neo4JDAO {
         m.put("9", endTime);
 
         return IteratorUtil.singleOrNull(cypher.query(
-//                "MERGE (e:Event {eventName:{1}," +
-//                        " locationName:{2}, " +
-//                        " address:{3}," +
-//                        " postcode:{4}," +
-//                        " link:{5}," +
-//                        " startDate:{6}," +
-//                        " endDate:{7}," +
-//                        " timeStart:{8}," +
-//                        " timeEnd:{9}})" +
-//                        " RETURN e",
                 "MERGE (e:Event {eventName:{1}," +
                         " locationName:{2}," +
                         " address:{3}," +
@@ -88,6 +78,22 @@ public class Neo4JDAO {
                 m
         ));
 
+    }
+
+    public Iterable<Map<String,Object>> queryEventNode(String eventName) {
+        return IteratorUtil.asCollection(cypher.query(
+        "MATCH (e:Event {eventName:\"" + eventName + "\"})\n" +
+                " RETURN e.eventName as eventName, " +
+                "e.locationName as locationName, " +
+                "e.address as address, " +
+                "e.postcode as postcode, " +
+                "e.link as link, " +
+                "e.startDate as startDate, " +
+                "e.endDate as endDate, " +
+                "e.startTime as startTime, " +
+                "e.endTime as endTime"
+                ,
+                map("1", eventName)));
     }
 
 
