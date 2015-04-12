@@ -103,4 +103,14 @@ public class Neo4JController extends Controller {
 //        return ok();
     }
 
+    public static Result allEvents() throws JSONException {
+        JSONArray a = new JSONArray();
+        Iterable<Map<String,Object>> result = service.getAllNodes();
+        Iterator it = result.iterator();
+        while(it.hasNext()) {
+            a.put(it.next());
+        }
+        return ok(a.get(0).toString());
+    }
+
 }

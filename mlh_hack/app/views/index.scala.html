@@ -1,7 +1,5 @@
 @main("Bored") {
 
-    <script src="@routes.Assets.at("javascripts/js/accordion.js")"></script>
-
     <div class="container-fluid">
         <div id="blurred-image-container">
             <div class="page-clear">
@@ -38,38 +36,20 @@
 
     </div>
 
-    <script>
-    $(document).ready(function() {
-    $('a[rel="relativeanchor"]').click(function(){
-    $('html, body').animate({
-    scrollTop: $( $.attr(this, 'href') ).offset().top
-    }, 500);
-    return false;
-    });
-    });
-    </script>
+    @*<script>*@
+    @*$(document).ready(function() {*@
+    @*$('a[rel="relativeanchor"]').click(function(){*@
+    @*$('html, body').animate({*@
+    @*scrollTop: $( $.attr(this, 'href') ).offset().top*@
+    @*}, 500);*@
+    @*return false;*@
+    @*});*@
+    @*});*@
+    @*</script>*@
 
 } {
     <link type="text/css" rel="stylesheet" href="@routes.Assets.at("stylesheets/index_page.css")">
     <script type="text/javascript" src="@routes.Assets.at("javascripts/src/smoothScroll.js")"></script>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-
-    <script>
-    $(document ).ready(function() {
-    $(window).scroll(function() {
-    // Get scroll position
-    var s = $(window ).scrollTop(),
-    // scroll value and opacity
-    opacityVal = (s / 150.0);
-    console.log(opacityVal);
-    // opacity value 0% to 100%
-    $('.blurred-bg').css('opacity', opacityVal);
-    });
-    $("#iframe").contents().find("a").bind('click', function(){
-    window.location.href = $(this).attr('href');
-    });
-    });
-    </script>
-
 }

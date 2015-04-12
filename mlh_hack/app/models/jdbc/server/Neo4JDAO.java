@@ -169,5 +169,12 @@ RETURN e
         ));
     }
 
+    public Iterable<Map<String,Object>> getAllNodes() {
+        return IteratorUtil.asCollection(cypher.query(
+           "MATCH (e:Event) RETURN e",
+                map("1", "e")
+        ));
+    }
+
 
 }
