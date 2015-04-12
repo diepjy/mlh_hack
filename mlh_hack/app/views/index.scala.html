@@ -1,7 +1,137 @@
-@(message: String)
+@main("Bored") {
 
-@main("Welcome to Play") {
+    <div class="container-fluid">
+        <div id="blurred-image-container">
+            <div class="page-clear">
+                <div class="page-blur">
+                    <div class="page-home">
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+                                <div id="page-text" class="light-text">
+                                    <h1 class="text-center main-heading">Welcome to WebCite</h1>
+                                    <div class="text-center">
+                                        <p>Make tracking and analysing citation data a breeze. Keep tabs on how your published work is impacting the community, validate the progress of papers or start investigating author relationships. WebCite brings a fun and personalised touch to the world of publishing in academia! </p>
+                                    </div>
+                                    <div class="text-center margin-ut">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <a id="page-btn" class="btn btn-md btn-left" href="#learn-more" rel="relativeanchor"><p>Learn More</p></a>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <a id="page-btn" class="btn btn-md btn-right" href="auth/login" rel="relativeanchor"><p>Sign Up/ Login </p></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-    @play20.welcome(message, style = "Java")
+                            <div class="clear-bg"></div>
+                            <div class="blurred-bg"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="learn-more" class="row">
+            <div class="col-xs-10 col-xs-offset-1 text-center">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-center margin-ut">
+                            <h2>Features</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row feature-info">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="text-center">
+                                    <h2>Authors</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="text-left">
+                                    <p>You may search for an author in the top right hand corner and retrieve information about them as well as a list of the papers they have written. Any author featured on Web of Science may be looked up. You can additionally access specific papers directly from here. </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <img class="feature-image" src="@routes.Assets.at("images/lewis-carroll1.jpg")">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row feature-info">
+                    <div class="col-md-8 col-md-push-4">
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-6">
+                                <div class="text-center margin-ut">
+                                    <h2>Articles</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-2">
+                                <div class="text-right margin-ut">
+                                    <p>Whether you are looking up a particular author and want to see the papers they have written, or if you want to look up a specific paper, you can see basic information about this paper. This includes who the paper has been written by, the year it has been published in, the location it has been published from and the abstract.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-md-pull-8">
+                        <div>
+                            <img class="feature-image" src="@routes.Assets.at("images/document-icon.png")">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    $(document).ready(function() {
+    $('a[rel="relativeanchor"]').click(function(){
+    $('html, body').animate({
+    scrollTop: $( $.attr(this, 'href') ).offset().top
+    }, 500);
+    return false;
+    });
+    });
+    </script>
+
+} {
+    <link type="text/css" rel="stylesheet" href="@routes.Assets.at("stylesheets/index_page.css")">
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/src/smoothScroll.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/src/blur_effect.js")"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <script>
+    $(document ).ready(function() {
+    $(window).scroll(function() {
+    // Get scroll position
+    var s = $(window ).scrollTop(),
+    // scroll value and opacity
+    opacityVal = (s / 150.0);
+    console.log(opacityVal);
+    // opacity value 0% to 100%
+    $('.blurred-bg').css('opacity', opacityVal);
+    });
+    $("#iframe").contents().find("a").bind('click', function(){
+    window.location.href = $(this).attr('href');
+    });
+    //var elem = $('#iframe' ).contents( ).getElementsByClassName('nav-header')[0];
+    //$(elem ).hide();
+    //var elem = document.getElementsByClassName('nav-header')[0];
+    // elem.click();
+    });
+    </script>
 
 }

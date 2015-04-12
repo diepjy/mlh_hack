@@ -14,6 +14,8 @@ import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -65,5 +67,40 @@ public class Neo4JController extends Controller {
         return ok(jsonQuery.toString());
     }
 
+    //Search old events
+    public static Result searchOldEvents() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat timeFormat = new SimpleDateFormat("HH.mm");
+        Date date = new Date();
+        Logger.debug(dateFormat.format(date));
+        Logger.debug(timeFormat.format(date));
+        Iterable<Map<String,Object>> node = service.searchOldNode(dateFormat.format(date), timeFormat.format(date));
+        Iterator it = node.iterator();
+        JSONArray a = new JSONArray();
+        while (it.hasNext()) {
+            a.put(it.next());
+        }
+        return ok(a.toString());
+    }
+
     //TODO: get rid of old events? Poll every 6 hours
+    public static void removeOldEvents() {
+        while(true) {
+            try {
+                Thread.sleep(3600 * 1000);
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                DateFormat timeFormat = new SimpleDateFormat("HH.mm");
+                Date date = new Date();
+                Logger.debug(dateFormat.format(date));
+                Logger.debug(timeFormat.format(date));
+                service.removeOldNodeDate(dateFormat.format(date), timeFormat.format(date));
+                service.removeOldNodeTime(dateFormat.format(date), timeFormat.format(date));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+//        return ok();
+    }
+
 }
