@@ -12,8 +12,184 @@
         <link type="text/css" rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
         <title>Facebook Login JavaScript Example</title>
         <meta charset="UTF-8">
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="initial-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="translucent-black">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Events near me!</title>
+
+        <link rel="stylesheet" href="http://js.arcgis.com/3.13/esri/css/esri.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script src="http://js.arcgis.com/3.13compact/"> </script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+        <script src="js/ui-bootstrap-tpls-0.12.1.min.js"> </script>
+        <script src="js/accordion.js"> </script>
+
+        <script>
+        var map;
+        var graphic;
+        var currLocation;
+        var watchId;
+        var data;
+        require([
+        "esri/map", "esri/geometry/Point", "esri/InfoTemplate",
+        "esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol",
+        "esri/graphic", "esri/Color"
+        ], function(
+        Map, Point, InfoTemplate,
+        SimpleMarkerSymbol, SimpleLineSymbol,
+        Graphic, Color
+        ) {
+        map = new Map("map", {
+        basemap: "topo",
+        center: [-0.130753,51.508031], //Centre of London
+        zoom: 10
+        });
+        map.on("load", initFunc);
+
+        function orientationChanged() {
+        if(map){
+        map.reposition();
+        map.resize();
+        zoomToLocation();
+        }
+        }
+
+        function initFunc(map) {
+        if( navigator.geolocation ) {
+        navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
+        watchId = navigator.geolocation.watchPosition(showLocation, locationError);
+        } else {
+        alert("Browser doesn't support Geolocation. Visit http://caniuse.com to see browser support for the Geolocation API.");
+        }
+        }
+
+        function locationError(error) {
+        //error occurred so stop watchPosition
+        if( navigator.geolocation ) {
+        navigator.geolocation.clearWatch(watchId);
+        }
+        switch (error.code) {
+        case error.PERMISSION_DENIED:
+        alert("Location not provided");
+        break;
+
+        case error.POSITION_UNAVAILABLE:
+        alert("Current location not available");
+        break;
+
+        case error.TIMEOUT:
+        alert("Timeout");
+        break;
+
+        default:
+        alert("unknown error");
+        break;
+        }
+        }
+
+        function zoomToLocation(location) {
+        var pt = new Point(location.coords.longitude, location.coords.latitude);
+        addGraphic(pt);
+        map.centerAndZoom(pt, 15);
+        }
+
+        function showLocation(location) {
+        //zoom to the users location and add a graphic
+        var pt = new Point(location.coords.longitude, location.coords.latitude);
+        if ( !graphic ) {
+        addGraphic(pt);
+        } else { // move the graphic if it already exists
+        graphic.setGeometry(pt);
+        }
+        map.centerAt(pt);
+        loadEvents();
+        }
+
+        function addGraphic(pt){
+        var symbol = new SimpleMarkerSymbol(
+        SimpleMarkerSymbol.STYLE_CIRCLE,
+        12,
+        new SimpleLineSymbol(
+        SimpleLineSymbol.STYLE_SOLID,
+        new Color([210, 105, 30, 0.5]),
+        8
+        ),
+        new Color([210, 105, 30, 0.9])
+        );
+        graphic = new Graphic(pt, symbol);
+        map.graphics.add(graphic);
+        }
+
+        function loadEvents(){
+        data = esri.request({
+        url: "events.json",
+        content:{
+        format:"json"
+        },
+        callbackParamName: "jsoncallback"
+        });
+        data.then(addPoints);
+        }
+
+        function addPoints(data){
+        var symbol = new SimpleMarkerSymbol().setStyle(
+        SimpleMarkerSymbol.STYLE_SQUARE).setColor(
+        new Color([255,0,0,0.5]));
+        data.forEach(function(entry) {
+        var loc = new esri.geometry.Point(entry.lon,entry.lat);
+        var attr = {"lat":entry.lat,"lon":entry.lon,"eventname":entry.eventname};
+        var infoTemplate = new InfoTemplate("${eventname}","Latitude: ${lat} <br/> Longitude: ${lon}");
+        map.graphics.add(new esri.Graphic(loc,symbol,attr,infoTemplate));
+        });
+
+        $('#myTab a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+        });
+        }
+
+        });
+        </script>
     </head>
+
     @content
+
+    <body onorientationchange="orientationChanged();">
+        <div role="tabpanel" style="width:100%; height:100%;">
+
+                <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#maptab" aria-controls="maptab" role="tab" data-toggle="tab">Map</a></li>
+                <li role="presentation"><a href="#listtab" aria-controls="listtab" role="tab" data-toggle="tab">List</a></li>
+            </ul>
+
+                <!-- Tab panes -->
+            <div class="tab-content" style="width:100%; height:100%;">
+                <div role="tabpanel" class="tab-pane active" id="maptab" style="width:100%; height:100%;">
+                    <div id="map" style="width:100%; height:100%;"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="listtab" ng-app="accordion">
+                    <div ng-controller="AccordionCtrl">
+                        <accordion>
+                            <accordion-group heading="{{group.eventname}}" ng-repeat="group in groups">
+                                <p>Latitude: {{group.lat}}</p>
+                                <p>Longitude: {{group.lon}}</p>
+                            </accordion-group>
+                        </accordion>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </body>
+
     <body>
         <script>
         // This is called with the results from from FB.getLoginStatus().
