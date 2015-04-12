@@ -1,0 +1,143 @@
+h1 {
+    font-size: 10em;
+}
+
+p {
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 992px) {
+    h1 {
+        font-size: 2.8em;
+    }
+
+    p {
+        font-size: 1.1em;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 2.5em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+
+    .navbar-form {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+}
+
+
+h1, h2, p {
+    font-family: 'Raleway', sans-serif;
+    color: white;
+}
+
+.btn {
+    text-transform: uppercase;
+    background-color: rgba(1, 1, 1, 0.4);
+    border-width: 1px;
+    border-color: cornsilk;
+    text-align: center;
+    width: 50px;
+}
+
+.text-center {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.main-heading {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.margin-ut {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.btn-left {
+    /*float: right;*/
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    font-weight: bold;
+}
+
+.btn-right {
+    /*float: left;*/
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    font-weight: bold;
+}
+
+
+.clear-bg {
+    z-index: -10;
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    background:#498EE0 url('http://www.mytheatreofdreams.com.au/wp-content/uploads/2013/05/London-skyline.jpg');
+}
+
+.blurred-bg {
+    z-index: -10;
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    opacity:  0;
+    background:#498EE0 url('https://d262ilb51hltx0.cloudfront.net/fit/c/1600/1280/gradv/29/81/40/darken/50/blur/50/0*I7mXgSon9oco-rim.jpeg');
+}
+
+.page-home {
+    margin-top: -20px;
+    //background: #498EE0 url('/assets/images/network_purple.png');
+    /*background: #498EE0 url('https://d262ilb51hltx0.cloudfront.net/fit/c/1600/1280/gradv/29/81/60/darken/25/0*I7mXgSon9oco-rim.jpeg');*/
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    width: 100%;
+    position: relative;
+    height: 500px;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #EBEBEB;
+    height: 1px;
+}
+
+.light-text {
+    color: cornsilk;
+}
+
+.size-5 {
+    width: 5%;
+}
+
+.size-10 {
+    width: 10%;
+}
+
+.size-70 {
+    width: 70%;
+}
+
+.size-75 {
+    width: 75%;
+}
+
+.size-80 {
+    width: 80%;
+}
